@@ -7,9 +7,15 @@
     <p> This is a paragraph; does this display?</p>
     <h2>Loop</h2>
         <ul>
-                  <li>
-                  <%= shortURL %>
-                  <%= longUrl %> </li>
+            <li>
+              <%= shortURL %>
+              <%= longUrl %>
+              <form method="POST" action= <%="/urls/" + shortURL %> >
+                <label for="longURL"> Update a URL: </label>
+                <input id="longURL" type="text" name="longURL" placeholder="http://" style="width: 300px">
+                <input type="submit" value="Update">
+              </form>
+            </li>
         </ul>
 </body>
 </html>

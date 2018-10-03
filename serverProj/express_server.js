@@ -21,6 +21,8 @@ var urlDatabase = {
   "9sm5xK": "http://www.google.com"
 };
 
+// const templateVars = {};
+
 app.get("/", (req, res) => {
   res.send("Hello!");
 });
@@ -40,7 +42,7 @@ app.get("/hello", (req, res) => {
 app.get("/urls", (req, res) => {
   let templateVars = { urls: urlDatabase };
   res.render("urls_index", templateVars);
-  console.log(templateVars.urls);
+  // console.log(templateVars.urls);
 });
 
 app.use(bodyParser.urlencoded({extended: true}));
@@ -51,9 +53,9 @@ app.get("/urls/new", (req, res) => {
 
 app.post("/urls", (req, res) => {
   let randomNum = generateRandomString();
-  console.log(req.body);  // debug statement to see POST parameters
+  // console.log(req.body);  // debug statement to see POST parameters
   urlDatabase[ randomNum ] = req.body.longURL;
-  console.log(urlDatabase);
+  // console.log(urlDatabase);
   res.redirect("http://localhost:8080/urls/" + randomNum);
 });
 
@@ -74,3 +76,27 @@ app.get("/urls/:id", (req, res) => {
   longUrl : urlDatabase[req.params.id] }
   res.render("urls_show", templateVars);
 })
+
+app.post("/urls/:id/delete", (req, res) => {
+  console.log(req.params.id);
+  let templateVars = { urls: urlDatabase };
+  for(var key in urlDatabase) {
+    if (req.params.id === key ) {
+      delete urlDatabase[key];
+    }
+  }
+  res.render("urls_index", templateVars);
+});
+
+// ____________________
+app.post("/urls/:id", (req, res) => {
+  console.log(req.params.id);
+  for(var key in urlDatabase) {
+    if (req.params.id === key ) {
+      urlDatabase[key] = req.body.longURL;
+    }
+  }
+
+  res.redirect("http://localhost:8080/urls/");
+  });
+// ________________________

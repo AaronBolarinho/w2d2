@@ -1,15 +1,15 @@
-function generateRandomString() {
-  let r = Math.random().toString(36).substring(7);
-  console.log("random", r);
-}
+var urlDatabase = {
+  "b2xVn2": "http://www.lighthouselabs.ca",
+  "9sm5xK": "http://www.google.com"
+};
 
+for(var key in urlDatabase) {
+    if ("http://www.lighthouselabs.ca" === urlDatabase[key] ) {
+      urlDatabase[key] = 'zzzzzy';
+    }
+  }
 
-generateRandomString();
-
-
-
-
-
+console.log(urlDatabase);
 
 // var urlDatabase = {
 //   "b2xVn2": "http://www.lighthouselabs.ca",
