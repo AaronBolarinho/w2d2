@@ -1,16 +1,29 @@
-var urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
-};
-
-let templateVars = { urls: urlDatabase };
-
-for(key in templateVars) {
-  for(key in urlDatabase) {
-  console.log(key);
-  console.log(urlDatabase[key])
+function generateRandomString() {
+  let r = Math.random().toString(36).substring(7);
+  console.log("random", r);
 }
-};
+
+
+generateRandomString();
+
+
+
+
+
+
+// var urlDatabase = {
+//   "b2xVn2": "http://www.lighthouselabs.ca",
+//   "9sm5xK": "http://www.google.com"
+// };
+
+// let templateVars = { urls: urlDatabase };
+
+// for(key in templateVars) {
+//   for(key in urlDatabase) {
+//   console.log(key);
+//   console.log(urlDatabase[key])
+// }
+// };
 
 
 
