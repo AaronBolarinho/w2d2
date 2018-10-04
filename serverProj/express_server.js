@@ -1,11 +1,15 @@
+//These are my global variables, dependencies, and functions
+
 var express = require("express");
 var app = express();
 var PORT = 8080; // default port 8080
 const bodyParser = require("body-parser");
 var cookieParser = require('cookie-parser')
 
+
 var app = express()
 app.use(cookieParser())
+app.use(bodyParser.urlencoded({extended: true}));
 
 app.set("view engine", "ejs");
 
@@ -14,10 +18,27 @@ function generateRandomString() {
   return r;
 }
 
+// These are my global objects
+
 var urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
 };
+
+const users = {
+  "userRandomID": {
+    id: "userRandomID",
+    email: "user@example.com",
+    password: "purple-monkey-dinosaur"
+  },
+ "user2RandomID": {
+    id: "user2RandomID",
+    email: "user2@example.com",
+    password: "dishwasher-funk"
+  }
+}
+
+// These are my app.gets
 
 app.get("/", (req, res) => {
   res.send("Hello!");
@@ -42,14 +63,21 @@ app.get("/urls", (req, res) => {
   res.render("urls_index", templateVars);
 });
 
-app.use(bodyParser.urlencoded({extended: true}));
-
 app.get("/urls/new", (req, res) => {
   let templateVars = {
     username : req.cookies["username"]
   }
   res.render("urls_new", templateVars);
 });
+
+app.get("/register", (req, res) => {
+  let templateVars = {
+    username : req.cookies["username"]
+  }
+  res.render("urls_register", templateVars);
+});
+
+//These are my app.posts
 
 app.post("/urls", (req, res) => {
   let randomNum = generateRandomString();
