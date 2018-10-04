@@ -2,5 +2,25 @@
 <html lang="en">
 <head>
   <title>TinyApp</title>
+  <p> Your Username is: <%= username %></p>
 </head>
+<body>
+  <p> Arrrr! Avast! 'Elllo Matey!</p>
+  <P> </P>
+        <form method="POST" action="/login" >
+
+        <% if(username){ %>
+        <form method="POST" action="/logout" >
+        <label for="logout"> Logout! Arr! Who Needs Ya!: </label>
+        <input id="logout" type="text" name="username" placeholder="Your Pirate Name" style="width: 1px">
+        <input type="submit" value="Over the Side!">
+        </form>
+        <% } else{ %>
+        <form method="POST" action="/login" >
+        <label for="login"> Login! Arr!: </label>
+        <input id="login" type="text" name="username" placeholder="Your Pirate Name" style="width: 300px">
+        <input type="submit" value="Board the Ship!">
+        </form>
+        <% } %>
+</body>
 </html>
