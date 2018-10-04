@@ -11,6 +11,13 @@ var app = express()
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({extended: true}));
 
+// // -------------------
+// app.use(function (err, res, req, next) {
+//  res.send(404, err.message);
+//  next()
+// });
+// // ------------------
+
 app.set("view engine", "ejs");
 
 function generateRandomString() {
@@ -134,7 +141,7 @@ app.post("/urls/:id", (req, res) => {
 app.post("/logout", (req, res) => {
 
   res.clearCookie("user_id", {});
-  res.redirect("http://localhost:8080/urls");
+  res.redirect("http://localhost:8080/register");
   });
 
 app.post("/register", (req, res) => {
@@ -144,14 +151,38 @@ app.post("/register", (req, res) => {
                        email: req.body.email,
                        password: req.body.password
                      }
+
   res.cookie('user_id', randomNum)
   console.log(users);
   res.redirect("http://localhost:8080/urls");
 });
 
 
+// app.post("/register", (req, res, next) => {
+
+//   let randomNum = generateRandomString();
+//   users[randomNum] = { id: randomNum,
+//                        email: req.body.email,
+//                        password: req.body.password
+//                      }
+
+//   if(!req.body.email || !req.body.password) {
+//   var err = new Error("No User Entered");
+//   next(err)
+//   }
+
+//   res.cookie('user_id', randomNum)
+//   console.log(users);
+//   res.redirect("http://localhost:8080/urls");
+// });
 
 
+
+// Modify the /register handler to handle error conditions.
+
+// If the e-mail or password are empty strings, send back a response with the 400 status code.
+
+// If someone tries to register with an existing user's email, send back a response with the 400 status code.
 
 
 

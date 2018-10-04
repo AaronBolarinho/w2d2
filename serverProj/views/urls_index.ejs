@@ -4,6 +4,7 @@
   <p><% include partials/_header %></p>
 </head>
 <body>
+  <a href="/urls/new"> Add a New, Unique Key! </a>
       <ul>
         <% for(key in urls) {%>
           <li>
@@ -11,9 +12,6 @@
             <%= urls[key] %>
             <form method="POST" action= <%= "/urls/" + key + "/delete" %> >
             <label for="longURL">Delete a URL:</label>
-            <!--<input id="longURL" type="text" name="longURL" placeholder="http://" style="width: 300px">
-            <input type="submit" value="Submit">
-            -->
             <button> Delete </button>
             <a href= <%=  "/urls/" + key %> > Edit this Unique Key! </a>
             </form>
