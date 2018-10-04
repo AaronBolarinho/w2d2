@@ -79,13 +79,13 @@ app.get("/urls/:id", (req, res) => {
 
 app.post("/urls/:id/delete", (req, res) => {
   console.log(req.params.id);
-  let templateVars = { urls: urlDatabase };
+
   for(var key in urlDatabase) {
     if (req.params.id === key ) {
       delete urlDatabase[key];
     }
   }
-  res.render("urls_index", templateVars);
+   res.redirect("/urls/");
 });
 
 app.post("/urls/:id", (req, res) => {
@@ -112,3 +112,4 @@ app.post("/logout", (req, res) => {
   res.clearCookie("username", {});
   res.redirect("http://localhost:8080/urls");
   });
+
