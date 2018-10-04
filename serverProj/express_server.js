@@ -12,10 +12,10 @@ app.use(cookieParser())
 app.use(bodyParser.urlencoded({extended: true}));
 
 // // -------------------
-// app.use(function (err, res, req, next) {
-//  res.send(404, err.message);
-//  next()
-// });
+app.use(function (err, res, req, next) {
+ res.send(404, err.message);
+ next()
+});
 // // ------------------
 
 app.set("view engine", "ejs");
@@ -52,7 +52,7 @@ const users = {
 // These are my app.gets
 
 app.get("/", (req, res) => {
-  res.send("Hello!");
+  res.render("_hello");
 });
 
 app.listen(PORT, () => {
@@ -141,7 +141,7 @@ app.post("/urls/:id", (req, res) => {
 app.post("/logout", (req, res) => {
 
   res.clearCookie("user_id", {});
-  res.redirect("http://localhost:8080/register");
+  res.redirect("http://localhost:8080/");
   });
 
 app.post("/register", (req, res) => {
@@ -151,6 +151,11 @@ app.post("/register", (req, res) => {
                        email: req.body.email,
                        password: req.body.password
                      }
+
+  if(!req.body.email || !req.body.password) {
+  var err = new Error("No User Entered");
+  next(err)
+  }
 
   res.cookie('user_id', randomNum)
   console.log(users);
