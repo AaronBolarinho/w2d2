@@ -18,6 +18,10 @@ function generateRandomString() {
   return r;
 }
 
+function currentUser(req) {
+  return users[req.cookies.user_id]
+}
+
 // These are my global objects
 
 var urlDatabase = {
@@ -56,33 +60,25 @@ app.get("/hello", (req, res) => {
   res.send("<html><body>Hello <b>World</b></body></html>\n");
 });
 
+app.get("/register", (req, res) => {
+  let templateVars = {
+    user : currentUser(req)
+  }
+  res.render("urls_register", templateVars);
+});
+
 app.get("/urls", (req, res) => {
   let templateVars = { urls: urlDatabase,
-                       username : req.cookies["username"]
+                       user : currentUser(req)
                      };
   res.render("urls_index", templateVars);
 });
 
 app.get("/urls/new", (req, res) => {
   let templateVars = {
-    username : req.cookies["username"]
+    user : currentUser(req)
   }
   res.render("urls_new", templateVars);
-});
-
-app.get("/register", (req, res) => {
-  let templateVars = {
-    username : req.cookies["username"]
-  }
-  res.render("urls_register", templateVars);
-});
-
-//These are my app.posts
-
-app.post("/urls", (req, res) => {
-  let randomNum = generateRandomString();
-  urlDatabase[ randomNum ] = req.body.longURL;
-  res.redirect("http://localhost:8080/urls/" + randomNum);
 });
 
 app.get("/u/:shortURL", (req, res) => {
@@ -100,10 +96,18 @@ app.get("/urls/:id", (req, res) => {
   let templateVars = {
   shortURL: req.params.id,
   longUrl : urlDatabase[req.params.id],
-  username : req.cookies["username"]
+  user : currentUser(req)
   }
   res.render("urls_show", templateVars);
 })
+
+//These are my app.posts
+
+app.post("/urls", (req, res) => {
+  let randomNum = generateRandomString();
+  urlDatabase[ randomNum ] = req.body.longURL;
+  res.redirect("http://localhost:8080/urls/" + randomNum);
+});
 
 app.post("/urls/:id/delete", (req, res) => {
   console.log(req.params.id);
@@ -127,17 +131,36 @@ app.post("/urls/:id", (req, res) => {
   res.redirect("http://localhost:8080/urls/");
 });
 
-app.post("/login", (req, res) => {
-
-  res.cookie('username', req.body.username)
-  console.log(req.body)
-  console.log(req.body.username)
-  res.redirect("http://localhost:8080/urls/");
-  });
-
 app.post("/logout", (req, res) => {
 
-  res.clearCookie("username", {});
+  res.clearCookie("user_id", {});
   res.redirect("http://localhost:8080/urls");
   });
 
+app.post("/register", (req, res) => {
+
+  let randomNum = generateRandomString();
+  users[randomNum] = { id: randomNum,
+                       email: req.body.email,
+                       password: req.body.password
+                     }
+  res.cookie('user_id', randomNum)
+  console.log(users);
+  res.redirect("http://localhost:8080/urls");
+});
+
+
+
+
+
+
+
+
+// This is  only code before I hade the registration box
+// app.post("/login", (req, res) => {
+
+//   res.cookie('username', req.body.username)
+//   console.log(req.body)
+//   console.log(req.body.username)
+//   res.redirect("http://localhost:8080/urls/");
+//   });

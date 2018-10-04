@@ -1,17 +1,38 @@
-var urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
-};
+Old header body
 
-for(var key in urlDatabase) {
-    if ("http://www.lighthouselabs.ca" === urlDatabase[key] ) {
-      urlDatabase[key] = 'zzzzzy';
-    }
-  }
+<% if(username){ %>
+        <form method="POST" action="/logout" >
+        <label for="logout"> Logout! Arr! Who Needs Ya!: </label>
+        <input id="logout" type="text" name="username" placeholder="Your Pirate Name" style="width: 1px">
+        <input type="submit" value="Over the Side!">
+        </form>
+        <% } else{ %>
+        <form method="POST" action="/login" >
+        <label for="login"> Login! Arr!: </label>
+        <input id="login" type="text" name="username" placeholder="Your Pirate Name" style="width: 300px">
+        <input type="submit" value="Board the Ship!">
+        </form>
+        <% } %>
 
-console.log(urlDatabase);
 
-action= <%= "/urls/" + shortURL + "/" longURL%> >
+
+
+
+
+// var urlDatabase = {
+//   "b2xVn2": "http://www.lighthouselabs.ca",
+//   "9sm5xK": "http://www.google.com"
+// };
+
+// for(var key in urlDatabase) {
+//     if ("http://www.lighthouselabs.ca" === urlDatabase[key] ) {
+//       urlDatabase[key] = 'zzzzzy';
+//     }
+//   }
+
+// console.log(urlDatabase);
+
+// action= <%= "/urls/" + shortURL + "/" longURL%> >
 
 // var urlDatabase = {
 //   "b2xVn2": "http://www.lighthouselabs.ca",
