@@ -26,9 +26,8 @@ function currentUser(req) {
 
 // These are my global objects
 
-var urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
+var urlDatabase = {default: {"b2xVn2": "http://www.lighthouselabs.ca",
+                              "9sm5xK": "http://www.google.com"}
 };
 
 const users = {
@@ -76,9 +75,13 @@ app.get("/urls", (req, res) => {
     return;
   }
 
+  let myUserId = currentUser(req).id
+
   let templateVars = { urls: urlDatabase,
-                       user : currentUser(req)
+                       user : currentUser(req),
+                       myUserId : myUserId
                      };
+
   return res.render("urls_index", templateVars);
 });
 
@@ -96,19 +99,34 @@ app.get("/urls/new", (req, res) => {
   return res.render("urls_new", templateVars);
 });
 
-app.get("/u/:shortURL", (req, res) => {
 
+
+
+app.get("/u/:shortURL", (req, res) => {
   let longURL;
 
-    for(var key in urlDatabase) {
-    if (req.params.shortURL === key ) {
-      longURL = urlDatabase[key]
+  for(var key1 in urlDatabase){
+    for(var key2 in urlDatabase[key1]){
+      if(key2 = req.params.shortURL)
+      longURL = urlDatabase[key1][key2]
     }
   }
+
   return res.redirect(longURL);
 });
 
+
+
+
+
+
 app.get("/urls/:id", (req, res) => {
+
+  if(!currentUser(req)) {
+    res.redirect("/");
+    return;
+  }
+
   let templateVars = {
   shortURL: req.params.id,
   longUrl : urlDatabase[req.params.id],
@@ -125,17 +143,27 @@ app.get("/login", (req, res) => {
 
 app.post("/urls", (req, res) => {
   let randomNum = generateRandomString();
-  urlDatabase[ randomNum ] = req.body.longURL;
+  var userKey = currentUser(req).id;
+
+  if (urlDatabase[userKey]) {
+    urlDatabase[userKey][randomNum] = req.body.longURL;
+  } else {
+    urlDatabase[currentUser(req).id] = {[randomNum]: req.body.longURL};
+  }
+
   console.log(urlDatabase);
   return res.redirect("http://localhost:8080/urls/" + randomNum);
 });
 
 app.post("/urls/:id/delete", (req, res) => {
 
-  for(var key in urlDatabase) {
+var userKey = currentUser(req).id;
+
+  for(var key in urlDatabase[userKey]) {
     if (req.params.id === key ) {
-      delete urlDatabase[key];
+      delete urlDatabase[userKey][key];
     }
+    console.log(urlDatabase);
   }
 
   return res.redirect("/urls/");
@@ -182,7 +210,7 @@ app.post("/login", (req, res) => {
 
 app.post("/logout", (req, res) => {
   res.clearCookie("user_id", {});
-    console.log(users);
+    // console.log(users);
   return res.redirect("http://localhost:8080/");
 });
 
