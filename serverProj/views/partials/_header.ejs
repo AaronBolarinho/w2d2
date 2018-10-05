@@ -2,14 +2,10 @@
   <p> Your Username is: <%= user.email %></p>
   <p> Arrrr! Avast! 'Elllo Matey!</p>
 </head>
-        <% if(user){ %>
-
+<p><a href="/register"> Register me Hearty! </a></p>
+<p><a href="/login"> Gah? How are you not Logged in? Dooo IIITT! </a></p>
         <form method="POST" action="/logout" >
         <label for="logout"> Logout! Arr! Who Needs Ya!: </label>
-        <input id="logout" type="text" name="username" placeholder="Your Pirate Name" style="width: 1px">
+        <input id="logout" type="text" name="user_id" placeholder="Your Pirate Name" style="width: 1px">
         <input type="submit" value="Over the Side!">
         </form>
-
-        <% } else{ %>
-        <a href="/register"> What?? Not a Pirate?! Join the Crew! </a>
-        <% } %>

@@ -11,13 +11,6 @@ var app = express()
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({extended: true}));
 
-// // -------------------
-app.use(function (err, res, req, next) {
- res.send(404, err.message);
- next()
-});
-// // ------------------
-
 app.set("view engine", "ejs");
 
 function generateRandomString() {
@@ -26,7 +19,9 @@ function generateRandomString() {
 }
 
 function currentUser(req) {
-  return users[req.cookies.user_id]
+  let uid = req.cookies.user_id
+  console.log("this is the iud", uid);
+  return uid
 }
 
 // These are my global objects
@@ -79,6 +74,7 @@ app.get("/urls", (req, res) => {
                        user : currentUser(req)
                      };
   res.render("urls_index", templateVars);
+  console.log(templateVars)
 });
 
 app.get("/urls/new", (req, res) => {
@@ -108,6 +104,10 @@ app.get("/urls/:id", (req, res) => {
   res.render("urls_show", templateVars);
 })
 
+app.get("/login", (req, res) => {
+  res.render("_login");
+});
+
 //These are my app.posts
 
 app.post("/urls", (req, res) => {
@@ -117,14 +117,14 @@ app.post("/urls", (req, res) => {
 });
 
 app.post("/urls/:id/delete", (req, res) => {
-  console.log(req.params.id);
 
   for(var key in urlDatabase) {
     if (req.params.id === key ) {
       delete urlDatabase[key];
     }
   }
-   res.redirect("/urls/");
+
+  return res.redirect("/urls/");
 });
 
 app.post("/urls/:id", (req, res) => {
@@ -135,34 +135,74 @@ app.post("/urls/:id", (req, res) => {
     }
   }
 
-  res.redirect("http://localhost:8080/urls/");
+  return res.redirect("http://localhost:8080/urls/");
+});
+
+app.post("/login", (req, res) => {
+
+  if (req.body.email && req.body.password) {
+    console.log('theres values', req.body.email, req.body.password)
+    for (let key in users) {
+      console.log('looping through', key, users[key])
+      if (req.body.email === users[key].email) {
+        console.log('email ok')
+        if(req.body.password === users[key].password) {
+          console.log('pwd ok')
+          res.cookie('user_id', users[key]);
+          return res.redirect("http://localhost:8080/urls");
+        } else {
+          return res.status(403).send('Arrrr...wrong pwd!');
+        }
+      }
+    }
+
+    console.log('no users matched')
+
+    return res.status(404).send('Arrrr...ye ought to register first, Mate-y!');
+
+  } else {
+    return res.status(400).send('Arrrr...ye mis-typed yer email or password!');
+  }
 });
 
 app.post("/logout", (req, res) => {
-
   res.clearCookie("user_id", {});
-  res.redirect("http://localhost:8080/");
-  });
+  console.log(users);
+  return res.redirect("http://localhost:8080/");
+});
 
 app.post("/register", (req, res) => {
 
+  if(!req.body.email || !req.body.password) {
+    return res.status(400).send('Avast! You forgot to give your name or password!');
+  }
+
+  for (let key in users) {
+    if(req.body.email === users[key].email) {
+      return res.status(400).send('Arrrr...ye already registered! Do you want to login?');
+      // suggest redirection to login
+    }
+  }
+
   let randomNum = generateRandomString();
+
   users[randomNum] = { id: randomNum,
                        email: req.body.email,
                        password: req.body.password
-                     }
-
-  if(!req.body.email || !req.body.password) {
-  var err = new Error("No User Entered");
-  next(err)
-  }
+                      }
 
   res.cookie('user_id', randomNum)
   console.log(users);
-  res.redirect("http://localhost:8080/urls");
+  return res.redirect("http://localhost:8080/urls");
 });
 
 
+
+
+
+// var err = new Error("No User Entered");
+//   next(err)
+//   }
 // app.post("/register", (req, res, next) => {
 
 //   let randomNum = generateRandomString();
