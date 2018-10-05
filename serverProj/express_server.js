@@ -20,7 +20,7 @@ function generateRandomString() {
 
 function currentUser(req) {
   let uid = req.cookies.user_id
-  console.log("this is the iud", uid);
+  // console.log("this is the iud", uid);
   return uid
 }
 
@@ -47,7 +47,7 @@ const users = {
 // These are my app.gets
 
 app.get("/", (req, res) => {
-  res.render("_hello");
+  return res.render("_hello");
 });
 
 app.listen(PORT, () => {
@@ -55,36 +55,49 @@ app.listen(PORT, () => {
 });
 
 app.get("/urls.json", (req, res) => {
-  res.json(urlDatabase);
+  return res.json(urlDatabase);
 });
 
 app.get("/hello", (req, res) => {
-  res.send("<html><body>Hello <b>World</b></body></html>\n");
+  return res.send("<html><body>Hello <b>World</b></body></html>\n");
 });
 
 app.get("/register", (req, res) => {
   let templateVars = {
     user : currentUser(req)
   }
-  res.render("urls_register", templateVars);
+  return res.render("urls_register", templateVars);
 });
 
 app.get("/urls", (req, res) => {
+
+  if(!currentUser(req)) {
+    res.redirect("/");
+    return;
+  }
+
   let templateVars = { urls: urlDatabase,
                        user : currentUser(req)
                      };
-  res.render("urls_index", templateVars);
-  console.log(templateVars)
+  return res.render("urls_index", templateVars);
 });
 
 app.get("/urls/new", (req, res) => {
+
+  if(!currentUser(req)) {
+    res.redirect("/");
+    return;
+  }
+
   let templateVars = {
     user : currentUser(req)
   }
-  res.render("urls_new", templateVars);
+
+  return res.render("urls_new", templateVars);
 });
 
 app.get("/u/:shortURL", (req, res) => {
+
   let longURL;
 
     for(var key in urlDatabase) {
@@ -92,7 +105,7 @@ app.get("/u/:shortURL", (req, res) => {
       longURL = urlDatabase[key]
     }
   }
-  res.redirect(longURL);
+  return res.redirect(longURL);
 });
 
 app.get("/urls/:id", (req, res) => {
@@ -101,11 +114,11 @@ app.get("/urls/:id", (req, res) => {
   longUrl : urlDatabase[req.params.id],
   user : currentUser(req)
   }
-  res.render("urls_show", templateVars);
+  return res.render("urls_show", templateVars);
 })
 
 app.get("/login", (req, res) => {
-  res.render("_login");
+  return res.render("_login");
 });
 
 //These are my app.posts
@@ -113,7 +126,8 @@ app.get("/login", (req, res) => {
 app.post("/urls", (req, res) => {
   let randomNum = generateRandomString();
   urlDatabase[ randomNum ] = req.body.longURL;
-  res.redirect("http://localhost:8080/urls/" + randomNum);
+  console.log(urlDatabase);
+  return res.redirect("http://localhost:8080/urls/" + randomNum);
 });
 
 app.post("/urls/:id/delete", (req, res) => {
@@ -128,7 +142,7 @@ app.post("/urls/:id/delete", (req, res) => {
 });
 
 app.post("/urls/:id", (req, res) => {
-  console.log(req.params.id);
+  // console.log(req.params.id);
   for(var key in urlDatabase) {
     if (req.params.id === key ) {
       urlDatabase[key] = req.body.longURL;
@@ -141,14 +155,15 @@ app.post("/urls/:id", (req, res) => {
 app.post("/login", (req, res) => {
 
   if (req.body.email && req.body.password) {
-    console.log('theres values', req.body.email, req.body.password)
+    // console.log('theres values', req.body.email, req.body.password)
     for (let key in users) {
-      console.log('looping through', key, users[key])
+      // console.log('looping through', key, users[key])
       if (req.body.email === users[key].email) {
-        console.log('email ok')
+        // console.log('email ok')
         if(req.body.password === users[key].password) {
-          console.log('pwd ok')
+          // console.log('pwd ok')
           res.cookie('user_id', users[key]);
+          // console.log(req.cookies.user_id);
           return res.redirect("http://localhost:8080/urls");
         } else {
           return res.status(403).send('Arrrr...wrong pwd!');
@@ -156,7 +171,7 @@ app.post("/login", (req, res) => {
       }
     }
 
-    console.log('no users matched')
+    // console.log('no users matched')
 
     return res.status(404).send('Arrrr...ye ought to register first, Mate-y!');
 
@@ -167,7 +182,7 @@ app.post("/login", (req, res) => {
 
 app.post("/logout", (req, res) => {
   res.clearCookie("user_id", {});
-  console.log(users);
+    console.log(users);
   return res.redirect("http://localhost:8080/");
 });
 
@@ -192,51 +207,7 @@ app.post("/register", (req, res) => {
                       }
 
   res.cookie('user_id', randomNum)
-  console.log(users);
-  return res.redirect("http://localhost:8080/urls");
+  // console.log(users);
+  return res.redirect("http://localhost:8080/login");
 });
 
-
-
-
-
-// var err = new Error("No User Entered");
-//   next(err)
-//   }
-// app.post("/register", (req, res, next) => {
-
-//   let randomNum = generateRandomString();
-//   users[randomNum] = { id: randomNum,
-//                        email: req.body.email,
-//                        password: req.body.password
-//                      }
-
-//   if(!req.body.email || !req.body.password) {
-//   var err = new Error("No User Entered");
-//   next(err)
-//   }
-
-//   res.cookie('user_id', randomNum)
-//   console.log(users);
-//   res.redirect("http://localhost:8080/urls");
-// });
-
-
-
-// Modify the /register handler to handle error conditions.
-
-// If the e-mail or password are empty strings, send back a response with the 400 status code.
-
-// If someone tries to register with an existing user's email, send back a response with the 400 status code.
-
-
-
-
-// This is  only code before I hade the registration box
-// app.post("/login", (req, res) => {
-
-//   res.cookie('username', req.body.username)
-//   console.log(req.body)
-//   console.log(req.body.username)
-//   res.redirect("http://localhost:8080/urls/");
-//   });
