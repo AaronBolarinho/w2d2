@@ -4,12 +4,19 @@ var express = require("express");
 var app = express();
 var PORT = 8080; // default port 8080
 const bodyParser = require("body-parser");
-var cookieParser = require('cookie-parser')
+// var cookieParser = require('cookie-parser')
+var cookieSession = require('cookie-session')
 const bcrypt = require('bcrypt');
 
 var app = express()
-app.use(cookieParser())
+// app.use(cookieParser())
 app.use(bodyParser.urlencoded({extended: true}));
+
+app.use(cookieSession({
+  name: 'session',
+  keys: ['avastYeSwarthyLubbers'],
+  maxAge: 24 * 60 * 60 * 1000
+}))
 
 app.set("view engine", "ejs");
 
@@ -19,8 +26,8 @@ function generateRandomString() {
 }
 
 function currentUser(req) {
-  let uid = req.cookies.user_id
-  // console.log("this is the iud", uid);
+  let uid = req.session.user_id
+  console.log("this is the iud", uid);
   return uid
 }
 
@@ -175,15 +182,17 @@ app.post("/urls/:id", (req, res) => {
 app.post("/login", (req, res) => {
 
   if (req.body.email && req.body.password) {
-    // console.log('theres values', req.body.email, req.body.password)
+     console.log('theres values', req.body.email, req.body.password)
     for (let key in users) {
-      // console.log('looping through', key, users[key])
+       console.log('looping through', key, users[key])
       if (req.body.email === users[key].email) {
-        // console.log('email ok')
+         console.log('email ok')
         if(bcrypt.compareSync(req.body.password, users[key].password)) {
-          // console.log('pwd ok')
-          res.cookie('user_id', users[key]);
-          // console.log(req.cookies.user_id);
+           console.log('pwd ok')
+
+            req.session.user_id = users[key]
+            console.log(users);
+;
           return res.redirect("http://localhost:8080/urls");
         } else {
           return res.status(403).send('Arrrr...wrong pwd!');
@@ -203,8 +212,8 @@ app.post("/login", (req, res) => {
 });
 
 app.post("/logout", (req, res) => {
-  res.clearCookie("user_id", {});
-    // console.log(users);
+  req.session = null;
+     console.log(users);
   return res.redirect("http://localhost:8080/");
 });
 
@@ -229,8 +238,11 @@ app.post("/register", (req, res) => {
                        email: req.body.email,
                        password: hashedPassword
                       }
-
-  res.cookie('user_id', randomNum)
+  req.session.user_id = randomNum;
+  // res.cookie('user_id', randomNum)
+  console.log("These are the current users", users);
+  console.log(currentUser(req));
+  console.log(req.session.user_id);
   console.log(users);
   return res.redirect("http://localhost:8080/login");
 });
