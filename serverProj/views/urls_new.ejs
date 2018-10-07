@@ -5,10 +5,28 @@
     <p><% include partials/_header %></p>
   </head>
   <body>
-    <form action="/urls" method="POST" style="margin:150px;">
-      <label for="longURL">Enter a URL:</label>
-      <input id="longURL" type="text" name="longURL" placeholder="http://" style="width: 300px">
-      <input type="submit" value="Submit">
-    </form>
+    <font color="white">
+    <div style="background-image:url('https://news.cnrs.fr/sites/default/files/styles/visuel_principal/public/assets/images/39781_72dpi.jpg');padding:5px;width:1500px;height:1500px;border:1px solid black solid black;background-repeat:no-repeat;">
+    <table align="center">
+      <thead>
+        <tr align="center">
+          <th>Enter a URL! Arrrr! *cough*</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr align="center">
+          <td>
+            <form action="/urls" method="POST">
+              <input id="longURL" type="text" name="longURL" placeholder="http://" style="width: 300px">
+              <input type="submit" value="Submit">
+            </form>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </font>
   </body>
 </html>
+
+

@@ -52,7 +52,21 @@ const users = {
 
 // These are my app.gets
 
+app.get("/error", (req, res) => {
+  return res.render("urls_error");
+});
+
+app.get("/login", (req, res) => {
+    res.render("_login");
+});
+
 app.get("/", (req, res) => {
+
+  if(currentUser(req)) {
+      res.redirect("/urls");
+      return;
+    }
+
   return res.render("_hello");
 });
 
@@ -69,6 +83,12 @@ app.get("/hello", (req, res) => {
 });
 
 app.get("/register", (req, res) => {
+
+  if(currentUser(req)) {
+      res.redirect("/urls");
+      return;
+    }
+
   let templateVars = {
     user : currentUser(req)
   }
@@ -78,7 +98,7 @@ app.get("/register", (req, res) => {
 app.get("/urls", (req, res) => {
 
   if(!currentUser(req)) {
-    res.redirect("/");
+    res.render("urls_error");
     return;
   }
 
@@ -95,7 +115,7 @@ app.get("/urls", (req, res) => {
 app.get("/urls/new", (req, res) => {
 
   if(!currentUser(req)) {
-    res.redirect("/");
+    res.render("urls_error");
     return;
   }
 
@@ -107,6 +127,12 @@ app.get("/urls/new", (req, res) => {
 });
 
 app.get("/u/:shortURL", (req, res) => {
+
+if(!currentUser(req)) {
+    res.render("urls_error");
+    return;
+  }
+
   let longURL;
 
   for(var key1 in urlDatabase){
@@ -122,15 +148,25 @@ app.get("/u/:shortURL", (req, res) => {
 app.get("/urls/:id", (req, res) => {
 
   if(!currentUser(req)) {
-    res.redirect("/");
+    res.render("urls_error");
     return;
+  }
+
+  let longURL;
+
+  for(var key1 in urlDatabase){
+    for(var key2 in urlDatabase[key1]){
+      if(key2 = req.params.id)
+      longURL = urlDatabase[key1][key2]
+    }
   }
 
   let templateVars = {
   shortURL: req.params.id,
-  longUrl : urlDatabase[req.params.id],
+  longUrl : longURL,
   user : currentUser(req)
   }
+
   return res.render("urls_show", templateVars);
 })
 
@@ -151,7 +187,7 @@ app.post("/urls", (req, res) => {
   }
 
   console.log(urlDatabase);
-  return res.redirect("http://localhost:8080/urls/" + randomNum);
+  return res.redirect("http://localhost:8080/urls/");
 });
 
 app.post("/urls/:id/delete", (req, res) => {
@@ -169,10 +205,11 @@ var userKey = currentUser(req).id;
 });
 
 app.post("/urls/:id", (req, res) => {
-  // console.log(req.params.id);
-  for(var key in urlDatabase) {
-    if (req.params.id === key ) {
-      urlDatabase[key] = req.body.longURL;
+
+  for(var key1 in urlDatabase){
+    for(var key2 in urlDatabase[key1]){
+      if(key2 = req.params.id)
+      urlDatabase[key1][key2] = req.body.longURL
     }
   }
 

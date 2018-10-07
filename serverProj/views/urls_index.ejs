@@ -4,23 +4,44 @@
   <p><% include partials/_header %></p>
 </head>
 <body>
-  <a href="/urls/new"> Add a New, Unique Key! </a>
-      <ul>
-        <% for(key in urls[myUserId]) {%>
-          <li>
-            <%= key %>
-            <%= urls[myUserId][key] %>
-            <form method="POST" action= <%= "/urls/" + key + "/delete" %> >
+  <font color="white">
+  <div style="background-image:url('https://dak95nwic4sny.cloudfront.net/73/caribbean-and-mexico-39537657-1481535881-ImageGalleryLightboxLarge.jpg');padding:5px;width:1500px;height:1500px;border:1px solid black solid black;background-repeat:no-repeat;">
+
+  <a href="/urls/new"><font color="yellow"> Add a New, Unique Key!</font></a>
+
+<table width="75%" cellspacing="8" cellpadding="8" border="0">
+  <thead>
+    <tr align="left">
+      <th>Ye Short Url</th>
+      <th>Ye Long Url</th>
+      <th>Keelhaul this Url</th>
+      <th>Alter this Url's Attitude<th>
+      <th>Set Sail to This Url<th>
+    </tr>
+  </thead>
+  <tbody>
+  <% for(key in urls[myUserId]) {%>
+
+    <tr align="left">
+      <td ><%= key %></td>
+      <td><%= urls[myUserId][key] %></td>
+      <td>
+        <form method="POST" action= <%= "/urls/" + key + "/delete" %> >
             <label for="longURL">Delete a URL:</label>
             <button> Delete </button>
-            <a href= <%=  "/urls/" + key %> > Edit this Unique Key! </a>
-            <a href= <%=  "/u/" + key %> > Go to this site! </a>
-            </form>
-          </li>
-        <% }; %>
-      </ul>
+          </form>
+      </td>
+      <td><a href= <%=  "/urls/" + key %> > <font color="white"> Edit this Unique Key!</font></a></td>
+      <td><a href= <%=  "/u/" + key %> ><font color="white">Go to this site! </a></font></td>
+    </tr>
 
+  <% }; %>
+  </tbody>
+</table>
+</font>
+</div>
 </body>
 </html>
+
 
 

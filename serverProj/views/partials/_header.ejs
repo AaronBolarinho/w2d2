@@ -1,11 +1,21 @@
-<head>
-  <p> Your Username is: <%= user.email %></p>
-  <p> Arrrr! Avast! 'Elllo Matey!</p>
-</head>
-<p><a href="/register"> Register me Hearty! </a></p>
-<p><a href="/login"> Gah? How are you not Logged in? Dooo IIITT! </a></p>
-        <form method="POST" action="/logout" >
+
+<table width="100%" cellspacing="8" cellpadding="0" border="0" align="center" bgcolor="#0e0e0f">
+  <tr bgcolor="#ffffff">
+    <td width="33%" height="67" align="center">
+      Your Username is: <%= user.email %>
+    </td>
+    <td>
+      <a href="/register"> Register me Hearty! </a>
+    </td>
+    <td>
+      <a href="/login"> Gah? How are you not Logged in? Dooo it...or beware..! </a>
+    </td>
+    <td>
+      <form method="POST" action="/logout" >
         <label for="logout"> Logout! Arr! Who Needs Ya!: </label>
         <input id="logout" type="text" name="user_id" placeholder="Your Pirate Name" style="width: 1px">
         <input type="submit" value="Over the Side!">
-        </form>
+      </form>
+  </td>
+</table>
+    <strong><p> Arrrr! Avast! 'Elllo Matey!</p></strong>
