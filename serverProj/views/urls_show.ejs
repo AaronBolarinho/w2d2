@@ -5,32 +5,32 @@
   <p><% include partials/_header %></p>
 </head>
 <body>
-<font color="white">
-<div style="background-image:url('http://3.bp.blogspot.com/-T4HCdpFbyrA/UU5IJ8tRVwI/AAAAAAAAAUc/EpSI2-98ww8/s1600/DSC02520.JPG');padding:5px;width:1500px;height:1500px;border:1px solid black solid black;background-repeat:no-repeat;">
-<table width="75%" cellspacing="8" cellpadding="8" border="0">
-  <thead>
-    <tr align="left">
-      <th>Ye Short Url</th>
-      <th>Ye Long Url</th>
-      <th>Keelhaul this Url</th>
-      <th>Go back to the Main Page!<th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr align="left">
-      <td ><%= shortURL %></td>
-      <td><%= longUrl %></td>S
-      <td>
-        <form method="POST" action= <%="/urls/" + shortURL %> >
-            <input id="longURL" type="text" name="longURL" placeholder="http://" style="width: 300px">
-            <input type="submit" value="Update">
-        </form>
-      </td>
-      <td><a href="/urls/"><font color="white">Yar! Get back to our Hideout!! </a></font></td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</font>
+  <font color="white">
+  <div style="background-image:url('http://3.bp.blogspot.com/-T4HCdpFbyrA/UU5IJ8tRVwI/AAAAAAAAAUc/EpSI2-98ww8/s1600/DSC02520.JPG');padding:5px;width:1500px;height:1500px;border:1px solid black solid black;background-repeat:no-repeat;">
+    <table width="75%" cellspacing="8" cellpadding="8" border="0">
+      <thead>
+        <tr align="left">
+          <th>Ye Short Url</th>
+          <th>Ye Long Url</th>
+          <th>Keelhaul this Url</th>
+          <th>Go back to the Main Page!<th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr align="left">
+          <td ><%= shortURL %></td>
+          <td><%= longUrl %></td>S
+          <td>
+            <form method="POST" action= <%="/urls/" + shortURL %> >
+                <input id="longURL" type="text" name="longURL" placeholder="http://" style="width: 300px">
+                <input type="submit" value="Update">
+            </form>
+          </td>
+          <td><a href="/urls/"><font color="white">Yar! Get back to our Hideout!! </a></font></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  </font>
 </body>
 </html>

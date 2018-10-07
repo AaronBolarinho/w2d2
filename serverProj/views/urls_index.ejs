@@ -9,37 +9,37 @@
 
   <a href="/urls/new"><font color="yellow"> Add a New, Unique Key!</font></a>
 
-<table width="75%" cellspacing="8" cellpadding="8" border="0">
-  <thead>
-    <tr align="left">
-      <th>Ye Short Url</th>
-      <th>Ye Long Url</th>
-      <th>Keelhaul this Url</th>
-      <th>Alter this Url's Attitude<th>
-      <th>Set Sail to This Url<th>
-    </tr>
-  </thead>
-  <tbody>
-  <% for(key in urls[myUserId]) {%>
+  <table width="75%" cellspacing="8" cellpadding="8" border="0">
+    <thead>
+      <tr align="left">
+        <th>Ye Short Url</th>
+        <th>Ye Long Url</th>
+        <th>Keelhaul this Url</th>
+        <th>Alter this Url's Attitude<th>
+        <th>Set Sail to This Url<th>
+      </tr>
+    </thead>
+    <tbody>
+    <% for(key in urls[myUserId]) {%>
 
-    <tr align="left">
-      <td ><%= key %></td>
-      <td><%= urls[myUserId][key] %></td>
-      <td>
-        <form method="POST" action= <%= "/urls/" + key + "/delete" %> >
-            <label for="longURL">Delete a URL:</label>
-            <button> Delete </button>
-          </form>
-      </td>
-      <td><a href= <%=  "/urls/" + key %> > <font color="white"> Edit this Unique Key!</font></a></td>
-      <td><a href= <%=  "/u/" + key %> ><font color="white">Go to this site! </a></font></td>
-    </tr>
+      <tr align="left">
+        <td ><%= key %></td>
+        <td><%= urls[myUserId][key] %></td>
+        <td>
+          <form method="POST" action= <%= "/urls/" + key + "/delete" %> >
+              <label for="longURL">Delete a URL:</label>
+              <button> Delete </button>
+            </form>
+        </td>
+        <td><a href= <%=  "/urls/" + key %> > <font color="white"> Edit this Unique Key!</font></a></td>
+        <td><a href= <%=  "/u/" + key %> ><font color="white">Go to this site! </a></font></td>
+      </tr>
 
-  <% }; %>
-  </tbody>
-</table>
-</font>
-</div>
+    <% }; %>
+    </tbody>
+  </table>
+  </font>
+  </div>
 </body>
 </html>
 
